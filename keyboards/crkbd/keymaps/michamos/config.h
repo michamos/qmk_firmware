@@ -26,6 +26,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //#define TAPPING_TERM 100
 
 #define DOUBLE_TAP_SHIFT_TURNS_ON_CAPS_WORD
+#define TAPPING_TERM 200
+#define FLOW_TAP_TERM 150
+#define PERMISSIVE_HOLD
+#define CHORDAL_HOLD
+#define SPECULATIVE_HOLD
+#define DUMMY_MOD_NEUTRALIZER_KEYCODE KC_RIGHT_CTRL
 
 #ifdef RGBLIGHT_ENABLE
     #define RGBLIGHT_EFFECT_BREATHING

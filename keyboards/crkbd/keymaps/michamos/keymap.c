@@ -19,15 +19,28 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include QMK_KEYBOARD_H
 #include "keymap_ergol.h"
 
+//Layer-taps
 #define MY_SPC LT(1, KC_SPC)
 #define MY_ENT LT(2, KC_ENT)
+
+// Left-hand home row mods
+#define MY_A LGUI_T(KC_A)
+#define MY_S LALT_T(KC_S)
+#define MY_D LSFT_T(KC_D)
+#define MY_F LCTL_T(KC_F)
+
+// Right-hand home row mods
+#define MY_J RCTL_T(KC_J)
+#define MY_K RSFT_T(KC_K)
+#define MY_L LALT_T(KC_L)
+#define MY_SCLN RGUI_T(KC_SCLN)
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [0] = LAYOUT_split_3x6_3_ex2(
   //,--------------------------------------------------------------.  ,--------------------------------------------------------------.
        KC_TAB,    KC_Q,    KC_W,    KC_E,    KC_R,    KC_T, KC_LCTL,    KC_RCTL,    KC_Y,    KC_U,    KC_I,    KC_O,   KC_P,  KC_BSPC,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-      KC_LALT,    KC_A,    KC_S,    KC_D,    KC_F,    KC_G, KC_LALT,    KC_RALT,    KC_H,    KC_J,    KC_K,    KC_L, KC_SCLN, KC_RGUI,
+      KC_LALT,    MY_A,    MY_S,    MY_D,    MY_F,    KC_G, KC_LALT,    KC_RALT,    KC_H,    MY_J,    MY_K,    MY_L, MY_SCLN, KC_RGUI,
   //|--------+--------+--------+--------+--------+--------+--------'  `--------+--------+--------+--------+--------+--------+--------|
       KC_LCTL,    KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,                         KC_N,    KC_M, KC_COMM,  KC_DOT, KC_SLSH, KC_RCTL,
   //|--------+--------+--------+--------+--------+--------+--------.  ,--------+--------+--------+--------+--------+--------+--------|
@@ -41,7 +54,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //,--------------------------------------------------------------.  ,--------------------------------------------------------------.
        KC_TAB, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_LCTL,    KC_RCTL, KC_AGIN, KC_PSTE, KC_COPY,  KC_CUT, KC_UNDO, KC_BSPC,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-      KC_LCTL, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_LALT,    KC_RALT, KC_LEFT, KC_DOWN,   KC_UP, KC_RGHT,  KC_DEL, XXXXXXX,
+      KC_LCTL, KC_LGUI, KC_LALT, KC_LSFT, KC_LCTL, XXXXXXX, KC_LALT,    KC_RALT, KC_LEFT, KC_DOWN,   KC_UP, KC_RGHT,  KC_DEL, XXXXXXX,
   //|--------+--------+--------+--------+--------+--------+--------'  `--------+--------+--------+--------+--------+--------+--------|
       KC_LSFT, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                      KC_HOME, KC_PGDN, KC_PGUP,  KC_END,  KC_INS, XXXXXXX,
   //|--------+--------+--------+--------+--------+--------+--------.  ,--------+--------+--------+--------+--------+--------+--------|
@@ -54,7 +67,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //,--------------------------------------------------------------.  ,--------------------------------------------------------------.
        KC_TAB, XXXXXXX,    EG_7,    EG_8,    EG_9, XXXXXXX, QK_BOOT,    KC_RCTL, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_BSPC,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-      KC_LCTL, XXXXXXX,    EG_4,    EG_5,    EG_6, XXXXXXX, KC_LALT,    KC_RALT, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,  KC_GRV,
+      KC_LCTL, XXXXXXX,    EG_4,    EG_5,    EG_6, XXXXXXX, KC_LALT,    KC_RALT, XXXXXXX, KC_RCTL, KC_RSFT, KC_LALT, KC_RGUI,  KC_GRV,
   //|--------+--------+--------+--------+--------+--------+--------'  `--------+--------+--------+--------+--------+--------+--------|
       KC_LSFT, XXXXXXX,    EG_1,    EG_2,    EG_3, XXXXXXX,                      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_TILD,
   //|--------+--------+--------+--------+--------+--------+--------.  ,--------+--------+--------+--------+--------+--------+--------|
