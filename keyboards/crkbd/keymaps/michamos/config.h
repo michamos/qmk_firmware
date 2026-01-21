@@ -32,6 +32,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define CHORDAL_HOLD
 #define SPECULATIVE_HOLD
 #define DUMMY_MOD_NEUTRALIZER_KEYCODE KC_RIGHT_CTRL
+#define SPLIT_LAYER_STATE_ENABLE
 
 #ifdef RGBLIGHT_ENABLE
     #define RGBLIGHT_EFFECT_BREATHING

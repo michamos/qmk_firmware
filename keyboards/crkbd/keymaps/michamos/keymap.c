@@ -19,9 +19,15 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include QMK_KEYBOARD_H
 #include "keymap_ergol.h"
 
+enum layer_names {
+    _BASE,
+    _NAV,
+    _NUM
+};
+
 //Layer-taps
-#define MY_SPC LT(1, KC_SPC)
-#define MY_ENT LT(2, KC_ENT)
+#define MY_SPC LT(_NAV, KC_SPC)
+#define MY_ENT LT(_NUM, KC_ENT)
 
 // Left-hand home row mods
 #define MY_A LGUI_T(KC_A)
@@ -35,8 +41,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define MY_L LALT_T(KC_L)
 #define MY_SCLN RGUI_T(KC_SCLN)
 
+
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
-  [0] = LAYOUT_split_3x6_3_ex2(
+  [_BASE] = LAYOUT_split_3x6_3_ex2(
   //,--------------------------------------------------------------.  ,--------------------------------------------------------------.
        KC_TAB,    KC_Q,    KC_W,    KC_E,    KC_R,    KC_T, KC_LCTL,    KC_RCTL,    KC_Y,    KC_U,    KC_I,    KC_O,   KC_P,  KC_BSPC,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
@@ -49,8 +56,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   ),
 
-  // Nav, entered by holding MY_SPC (adapted from Miryoku)
-  [1] = LAYOUT_split_3x6_3_ex2(
+  [_NAV] = LAYOUT_split_3x6_3_ex2(
   //,--------------------------------------------------------------.  ,--------------------------------------------------------------.
        KC_TAB, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_LCTL,    KC_RCTL, KC_AGIN, KC_PSTE, KC_COPY,  KC_CUT, KC_UNDO, KC_BSPC,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
@@ -62,8 +68,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                       //`--------------------------'  `--------------------------'
   ),
 
-  // Num, entered by holding MY_ENT (adapted from Miryoku)
-  [2] = LAYOUT_split_3x6_3_ex2(
+  [_NUM] = LAYOUT_split_3x6_3_ex2(
   //,--------------------------------------------------------------.  ,--------------------------------------------------------------.
        KC_TAB, XXXXXXX,    EG_7,    EG_8,    EG_9, XXXXXXX, QK_BOOT,    KC_RCTL, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_BSPC,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
@@ -73,24 +78,40 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|--------+--------+--------+--------+--------+--------+--------.  ,--------+--------+--------+--------+--------+--------+--------|
                                            EG_DOT,    EG_0, QK_LLCK,    _______, _______, _______
                                       //`--------------------------'  `--------------------------'
-  ),
-
-  [3] = LAYOUT_split_3x6_3_ex2(
-  //,--------------------------------------------------------------.  ,--------------------------------------------------------------.
-       KC_TAB, KC_EXLM,   KC_AT, KC_HASH,  KC_DLR, KC_PERC, KC_LCTL,    KC_RCTL, KC_CIRC, KC_AMPR, KC_ASTR, KC_LPRN, KC_RPRN, KC_BSPC,
-  //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-      KC_LCTL, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_LALT,    KC_RALT, KC_MINS,  KC_EQL, KC_LBRC, KC_RBRC, KC_BSLS,  KC_GRV,
-  //|--------+--------+--------+--------+--------+--------+--------'  `--------+--------+--------+--------+--------+--------+--------|
-      KC_LSFT, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                      KC_UNDS, KC_PLUS, KC_LCBR, KC_RCBR, KC_PIPE, KC_TILD,
-  //|--------+--------+--------+--------+--------+--------+--------.  ,--------+--------+--------+--------+--------+--------+--------|
-                                          KC_LGUI, _______,  KC_SPC,     KC_ENT, _______, KC_RGUI
-                                      //`--------------------------'  `--------------------------'
   )
+
 };
 
 void keyboard_post_init_user(void) {
     rgb_matrix_mode_noeeprom(RGB_MATRIX_SOLID_COLOR);
     rgb_matrix_sethsv_noeeprom(HSV_OFF);
+}
+
+bool is_caps_word_active = false;
+
+void caps_word_set_user(bool active) {
+    if (active) {
+        is_caps_word_active = true;
+    } else {
+        is_caps_word_active = false;
+    }
+}
+
+#define MY_RGB_INDICATOR_COLOR 0, 100, 100
+
+bool rgb_matrix_indicators_user(void) {
+    if (is_caps_word_active) {
+        rgb_matrix_set_color(g_led_config.matrix_co[3][4], MY_RGB_INDICATOR_COLOR);
+    }
+    if (layer_state_is(_NAV)) {
+        rgb_matrix_set_color(g_led_config.matrix_co[3][5], MY_RGB_INDICATOR_COLOR);
+        // workaround for weird aliasing causing both sides to turn on
+        rgb_matrix_set_color(g_led_config.matrix_co[7][5], 0, 0, 0);
+    }
+    if (layer_state_is(_NUM)) {
+        rgb_matrix_set_color(g_led_config.matrix_co[7][5], MY_RGB_INDICATOR_COLOR);
+    }
+    return false;
 }
 
 bool caps_word_press_user(uint16_t keycode) {
